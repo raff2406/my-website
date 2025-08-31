@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nebula Store - Login & Store</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <style>
+    /* Reset & Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #8a2be2;
+      --secondary: #9370db;
+      --accent: #ba55d3;
+      --light: #f8f6ff;
+      --dark: #2c2c54;
+      --success: #50c878;
+      --error: #ff6b6b;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #8a2be2 0%, #9370db 100%);
+      color: var(--dark);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 400px;
+      width: 100%;
+    }
+
+    /* Login Container */
+    .login-container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .login-container:hover {
+      transform: translateY(-5px);
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .logo h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .logo p {
+      color: var(--dark);
+      opacity: 0.7;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      margin-bottom: 2rem;
+      background: var(--light);
+      border-radius: 25px;
+      padding: 5px;
+    }
+
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 12px;
+      cursor: pointer;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+      font-weight: 600;
+    }
+
+    .tab.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Forms */
+    .form-container {
+      position: relative;
+      min-height: 300px;
+    }
+
+    .form {
+      position: absolute;
+      width: 100%;
+      opacity: 0;
+      transform: translateX(20px);
+      transition: all 0.3s ease;
+      display: none;
+    }
+
+    .form.active {
+      opacity: 1;
+      transform: translateX(0);
+      display: block;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #eee;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: white;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.1);
+    }
+
+    .form-input.error {
+      border-color: var(--error);
+    }
+
+    .error-message {
+      color: var(--error);
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      display: none;
+    }
+
+    .form-footer {
+      margin-top: 2rem;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 15px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background: var(--secondary);
+      transform: translateY(-2px);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    /* Additional Links */
+    .additional-links {
+      text-align: center;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #eee;
+    }
+
+    .additional-links a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .additional-links a:hover {
+      color: var(--secondary);
+    }
+
+    /* Success Message */
+    .success-message {
+      background: var(--success);
+      color: white;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    /* Store Content (Hidden initially) */
+    .store-content {
+      display: none;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      background: var(--light);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      color: var(--dark);
+    }
+
+    /* Navbar inside store */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .navbar .logo {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 600;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--primary);
+    }
+
+    .welcome-msg {
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-right: 1rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .login-container {
+        padding: 1.5rem;
+      }
+
+      .logo h1 {
+        font-size: 2rem;
+      }
+
+      .store-content {
+        padding: 10px;
+      }
+
+      .navbar {
+        flex-direction: column;
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Login Container -->
+  <div class="container" id="login-container">
+    <div class="login-container">
+      <div class="logo">
+        <h1>Nebula</h1>
+        <p>Welcome to Aesthetic Lifestyle</p>
+      </div>
+
+      <!-- Success Message -->
+      <div class="success-message" id="success-message">
+        Registration successful! Please login.
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <div class="tab active" data-tab="login">Login</div>
+        <div class="tab" data-tab="register">Register</div>
+      </div>
+
+      <!-- Forms Container -->
+      <div class="form-container">
+        <!-- Login Form -->
+        <form class="form active" id="login-form">
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input
+              type="email"
+              class="form-input"
+              id="login-email"
+              placeholder="Enter your email"
+              required
+            />
+            <div class="error-message" id="login-email-error">
+              Please enter a valid email
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input
+              type="password"
+              class="form-input"
+              id="login-password"
+              placeholder="Enter your password"
+              required
+            />
+            <div class="error-message" id="login-password-error">
+              Password is required
+            </div>
+          </div>
+          <div class="form-footer">
+            <button type="submit" class="btn">Login</button>
+          </div>
+        </form>
+
+        <!-- Register Form -->
+        <form class="form" id="register-form">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input
+              type="text"
+              class="form-input"
+              id="register-name"
+              placeholder="Enter your full name"
+              required
+            />
+            <div class="error-message" id="register-name-error">
+              Name is required
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input
+              type="email"
+              class="form-input"
+              id="register-email"
+              placeholder="Enter your email"
+              required
+            />
+            <div class="error-message" id="register-email-error">
+              Please enter a valid email
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input
+              type="password"
+              class="form-input"
+              id="register-password"
+              placeholder="Create a password"
+              required
+            />
+            <div class="error-message" id="register-password-error">
+              Password must be at least 6 characters
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Confirm Password</label>
+            <input
+              type="password"
+              class="form-input"
+              id="register-confirm-password"
+              placeholder="Confirm your password"
+              required
+            />
+            <div class="error-message" id="register-confirm-error">
+              Passwords do not match
+            </div>
+          </div>
+          <div class="form-footer">
+            <button type="submit" class="btn">Create Account</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Additional Links -->
+      <div class="additional-links">
+        <a href="#" id="forgot-password">Forgot Password?</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Store Content -->
+  <div class="store-content" id="store-content">
+    <nav class="navbar">
+      <a href="#" class="logo">Nebula</a>
+      <div class="welcome-msg" id="welcome-msg"></div>
+      <ul class="nav-menu">
+        <li><a href="#" class="nav-link">Beranda</a></li>
+        <li><a href="#products" class="nav-link">Produk</a></li>
+        <li><a href="#categories" class="nav-link">Kategori</a></li>
+        <li><a href="#about" class="nav-link">Tentang</a></li>
+        <li><a href="#contact" class="nav-link">Kontak</a></li>
+        <li>
+          <a href="#" class="nav-link" id="logout-btn"
+            ><i class="fas fa-sign-out-alt"></i> Logout</a
+          >
+        </li>
+      </ul>
+    </nav>
+
+    <section>
+      <h2>Selamat datang di Nebula Store!</h2>
+      <p>
+        Ini adalah halaman utama toko aesthetic Anda. Silakan jelajahi produk
+        dan kategori kami.
+      </p>
+    </section>
+  </div>
+
+  <script>
+    // DOM Elements
+    const loginContainer = document.getElementById("login-container");
+    const storeContent = document.getElementById("store-content");
+    const tabs = document.querySelectorAll(".tab");
+    const forms = document.querySelectorAll(".form");
+    const loginForm = document.getElementById("login-form");
+    const registerForm = document.getElementById("register-form");
+    const successMessage = document.getElementById("success-message");
+    const welcomeMsg = document.getElementById("welcome-msg");
+    const logoutBtn = document.getElementById("logout-btn");
+
+    // Check if user is already logged in
+    function checkAuth() {
+      const currentUser  = localStorage.getItem("currentUser ");
+      if (currentUser ) {
+        showStore(JSON.parse(currentUser ));
+      }
+    }
+
+    // Show store content
+    function showStore(user) {
+      loginContainer.style.display = "none";
+      storeContent.style.display = "block";
+      welcomeMsg.textContent = `Halo, ${user.name}!`;
+    }
+
+    // Tab switching
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const tabName = tab.getAttribute("data-tab");
+
+        // Update active tab
+        tabs.forEach((t) => t.classList.remove("active"));
+        tab.classList.add("active");
+
+        // Show corresponding form
+        forms.forEach((form) => {
+          form.classList.remove("active");
+          if (form.id === `${tabName}-form`) {
+            form.classList.add("active");
+          }
+        });
+      });
+    });
+
+    // Form validation functions
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    function showError(inputId, errorId) {
+      document.getElementById(inputId).classList.add("error");
+      document.getElementById(errorId).style.display = "block";
+    }
+
+    function hideError(inputId, errorId) {
+      document.getElementById(inputId).classList.remove("error");
+      document.getElementById(errorId).style.display = "none";
+    }
+
+    // Login form submission
+    loginForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("login-email").value.trim();
+      const password = document.getElementById("login-password").value;
+      let isValid = true;
+
+      // Validate email
+      if (!validateEmail(email)) {
+        showError("login-email", "login-email-error");
+        isValid = false;
+      } else {
+        hideError("login-email", "login-email-error");
+      }
+
+      // Validate password
+      if (password.length < 1) {
+        showError("login-password", "login-password-error");
+        isValid = false;
+      } else {
+        hideError("login-password", "login-password-error");
+      }
+
+      if (isValid) {
+        const users = JSON.parse(localStorage.getItem("users") || "[]");
+        const user = users.find(
+          (u) => u.email.toLowerCase() === email.toLowerCase() && u.password === password
+        );
+
+        if (user) {
+          localStorage.setItem("currentUser ", JSON.stringify(user));
+          showStore(user);
+        } else {
+          alert("Email atau password salah!");
+        }
+      }
+    });
+
+    // Register form submission
+    registerForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById("register-name").value.trim();
+      const email = document.getElementById("register-email").value.trim();
+      const password = document.getElementById("register-password").value;
+      const confirmPassword = document.getElementById("register-confirm-password").value;
+      let isValid = true;
+
+      // Validate name
+      if (name.length < 2) {
+        showError("register-name", "register-name-error");
+        isValid = false;
+      } else {
+        hideError("register-name", "register-name-error");
+      }
+
+      // Validate email
+      if (!validateEmail(email)) {
+        showError("register-email", "register-email-error");
+        isValid = false;
+      } else {
+        hideError("register-email", "register-email-error");
+      }
+
+      // Validate password
+      if (password.length < 6) {
+        showError("register-password", "register-password-error");
+        isValid = false;
+      } else {
+        hideError("register-password", "register-password-error");
+      }
+
+      // Validate confirm password
+      if (password !== confirmPassword) {
+        showError("register-confirm-password", "register-confirm-error");
+        isValid = false;
+      } else {
+        hideError("register-confirm-password", "register-confirm-error");
+      }
+
+      if (isValid) {
+        const users = JSON.parse(localStorage.getItem("users") || "[]");
+
+        // Check if email already exists
+        if (users.some((u) => u.email.toLowerCase() === email.toLowerCase())) {
+          alert("Email sudah terdaftar!");
+          return;
+        }
+
+        // Add new user
+        const newUser  = {
+          id: Date.now(),
+          name,
+          email,
+          password,
+          createdAt: new Date().toISOString(),
+        };
+
+        users.push(newUser );
+        localStorage.setItem("users", JSON.stringify(users));
+
+        // Show success message and switch to login tab
+        successMessage.style.display = "block";
+        setTimeout(() => {
+          successMessage.style.display = "none";
+        }, 3000);
+
+        // Switch to login tab
+        tabs[0].click();
+
+        // Clear form
+        registerForm.reset();
+      }
+    });
+
+    // Forgot password
+    document.getElementById("forgot-password").addEventListener("click", (e) => {
+      e.preventDefault();
+      alert("Fitur lupa password akan segera hadir!");
+    });
+
+    // Logout button
+    logoutBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      localStorage.removeItem("currentUser ");
+      storeContent.style.display = "none";
+      loginContainer.style.display = "block";
+      loginForm.reset();
+      registerForm.reset();
+      tabs[0].click();
+    });
+
+    // Initialize
+    checkAuth();
+  </script>
+</body>
+</html>

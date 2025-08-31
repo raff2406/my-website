@@ -3,14 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Nebula Store - Login & Store</title>
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  />
+  <title>Nebula Store – Login & Store</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- CSS Styles -->
   <style>
-    /* Reset & Base Styles */
-    * {
+    /* Reset */
+    *, *::before, *::after {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
@@ -32,387 +31,308 @@
       color: var(--dark);
       min-height: 100vh;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       padding: 20px;
+      line-height: 1.6;
     }
 
-    .container {
-      max-width: 400px;
-      width: 100%;
-    }
-
-    /* Login Container */
-    .login-container {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      padding: 2.5rem;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-      transition: transform 0.3s ease;
-    }
-
-    .login-container:hover {
-      transform: translateY(-5px);
-    }
-
-    .logo {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    .logo h1 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 0.5rem;
-    }
-
-    .logo p {
-      color: var(--dark);
-      opacity: 0.7;
-    }
-
-    /* Tabs */
-    .tabs {
-      display: flex;
-      margin-bottom: 2rem;
-      background: var(--light);
-      border-radius: 25px;
-      padding: 5px;
-    }
-
-    .tab {
-      flex: 1;
-      text-align: center;
-      padding: 12px;
-      cursor: pointer;
-      border-radius: 20px;
-      transition: all 0.3s ease;
-      font-weight: 600;
-    }
-
-    .tab.active {
-      background: var(--primary);
-      color: white;
-    }
-
-    /* Forms */
-    .form-container {
-      position: relative;
-      min-height: 300px;
-    }
-
-    .form {
-      position: absolute;
-      width: 100%;
-      opacity: 0;
-      transform: translateX(20px);
-      transition: all 0.3s ease;
-      display: none;
-    }
-
-    .form.active {
-      opacity: 1;
-      transform: translateX(0);
-      display: block;
-    }
-
-    .form-group {
-      margin-bottom: 1.5rem;
-    }
-
-    .form-label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 600;
-      color: var(--dark);
-    }
-
-    .form-input {
-      width: 100%;
-      padding: 15px;
-      border: 2px solid #eee;
-      border-radius: 10px;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-      background: white;
-    }
-
-    .form-input:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.1);
-    }
-
-    .form-input.error {
-      border-color: var(--error);
-    }
-
-    .error-message {
-      color: var(--error);
-      font-size: 0.9rem;
-      margin-top: 0.5rem;
-      display: none;
-    }
-
-    .form-footer {
-      margin-top: 2rem;
-    }
-
-    .btn {
-      width: 100%;
-      padding: 15px;
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .btn:hover {
-      background: var(--secondary);
-      transform: translateY(-2px);
-    }
-
-    .btn:active {
-      transform: translateY(0);
-    }
-
-    /* Additional Links */
-    .additional-links {
-      text-align: center;
-      margin-top: 1.5rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid #eee;
-    }
-
-    .additional-links a {
-      color: var(--primary);
-      text-decoration: none;
-      font-weight: 600;
-      transition: color 0.3s ease;
-    }
-
-    .additional-links a:hover {
-      color: var(--secondary);
-    }
-
-    /* Success Message */
-    .success-message {
-      background: var(--success);
-      color: white;
-      padding: 15px;
-      border-radius: 10px;
-      text-align: center;
-      margin-bottom: 1rem;
-      display: none;
-    }
-
-    /* Store Content (Hidden initially) */
-    .store-content {
-      display: none;
+    body .container {
       width: 100%;
       max-width: 1200px;
-      margin: 0 auto;
-      background: var(--light);
-      border-radius: 20px;
-      padding: 20px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-      color: var(--dark);
+      margin: auto;
     }
 
-    /* Navbar inside store */
+    /* Navbar */
     .navbar {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 2rem;
+      padding: 1rem 2rem;
     }
 
-    .navbar .logo {
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--primary);
-      text-decoration: none;
+    .navbar .logo img {
+      width: 70px;
+      height: 70px;
     }
 
     .nav-menu {
       display: flex;
+      gap: 2rem;
       list-style: none;
-      gap: 1.5rem;
       align-items: center;
     }
 
     .nav-link {
       text-decoration: none;
       color: var(--dark);
-      font-weight: 600;
-      cursor: pointer;
-      transition: color 0.3s ease;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      transition: all 0.3s ease;
     }
 
     .nav-link:hover {
-      color: var(--primary);
+      background: var(--primary);
+      color: white;
     }
 
-    .welcome-msg {
+    .cart-icon {
+      position: relative;
+      font-size: 1.2rem;
+      color: var(--dark);
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: var(--success);
+      color: white;
+      font-size: 0.8rem;
+      padding: 2px 6px;
+      border-radius: 50%;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      padding: 10px;
+    }
+
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background: var(--dark);
+      margin: 3px 0;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    /* Sections */
+    section {
+      padding: 3rem 0;
+    }
+
+    .hero {
+      text-align: center;
+      background: linear-gradient(135deg, #8a2be2 0%, #9370db 100%);
+      color: white;
+      border-radius: 0 0 50px 50px;
+      margin-bottom: 3rem;
+      padding: 4rem 0;
+    }
+
+    .hero-content h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .hero-content p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+
+    .btn {
+      padding: 12px 30px;
+      background: white;
+      color: var(--primary);
+      text-decoration: none;
+      border-radius: 25px;
       font-weight: 600;
-      font-size: 1.1rem;
-      margin-right: 1rem;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+      color: var(--dark);
+    }
+
+    .category-grid,
+    .product-grid {
+      display: grid;
+      gap: 2rem;
+    }
+
+    .category-grid {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    .product-grid {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    .category-card,
+    .product-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .category-card:hover,
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .category-icon i {
+      font-size: 3rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+    }
+
+    .product-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .product-price {
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+    }
+
+    .add-to-cart {
+      width: 100%;
+      padding: 12px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .add-to-cart:hover {
+      background: var(--secondary);
+    }
+
+    .featured {
+      background: linear-gradient(135deg, #e6e6fa 0%, #f8f6ff 100%);
+    }
+
+    .about-content {
+      max-width: 800px;
+      margin: auto;
+      text-align: center;
+    }
+
+    .footer {
+      background: var(--dark);
+      color: white;
+      padding: 3rem 0;
+      margin-top: 3rem;
+    }
+
+    .footer-content {
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    .footer-section h3 {
+      margin-bottom: 1rem;
+      color: var(--light);
+    }
+
+    .footer-links,
+    .social-links {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-links li {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-links a,
+    .social-links a {
+      color: #ccc;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: white;
+    }
+
+    .social-links a:hover {
+      color: var(--accent);
+    }
+
+    .copyright {
+      text-align: center;
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid #444;
+      color: #ccc;
     }
 
     /* Responsive */
-    @media (max-width: 480px) {
-      .login-container {
-        padding: 1.5rem;
+    @media (max-width: 768px) {
+      .hamburger {
+        display: flex;
       }
-
-      .logo h1 {
-        font-size: 2rem;
-      }
-
-      .store-content {
-        padding: 10px;
-      }
-
-      .navbar {
+      .nav-menu {
+        position: fixed;
+        top: 70px;
+        left: -100%;
+        width: 100%;
+        background: white;
         flex-direction: column;
-        gap: 1rem;
+        padding: 2rem;
+        transition: left 0.3s ease;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+      .nav-menu.active {
+        left: 0;
+      }
+      .hero-content h1 {
+        font-size: 2.5rem;
+      }
+      .section-title {
+        font-size: 2rem;
       }
     }
   </style>
 </head>
+
 <body>
-  <!-- Login Container -->
-  <div class="container" id="login-container">
-    <div class="login-container">
-      <div class="logo">
-        <h1>Nebula</h1>
-        <p>Welcome to Aesthetic Lifestyle</p>
-      </div>
-
-      <!-- Success Message -->
-      <div class="success-message" id="success-message">
-        Registration successful! Please login.
-      </div>
-
-      <!-- Tabs -->
-      <div class="tabs">
-        <div class="tab active" data-tab="login">Login</div>
-        <div class="tab" data-tab="register">Register</div>
-      </div>
-
-      <!-- Forms Container -->
-      <div class="form-container">
-        <!-- Login Form -->
-        <form class="form active" id="login-form">
-          <div class="form-group">
-            <label class="form-label">Email</label>
-            <input
-              type="email"
-              class="form-input"
-              id="login-email"
-              placeholder="Enter your email"
-              required
-            />
-            <div class="error-message" id="login-email-error">
-              Please enter a valid email
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Password</label>
-            <input
-              type="password"
-              class="form-input"
-              id="login-password"
-              placeholder="Enter your password"
-              required
-            />
-            <div class="error-message" id="login-password-error">
-              Password is required
-            </div>
-          </div>
-          <div class="form-footer">
-            <button type="submit" class="btn">Login</button>
-          </div>
-        </form>
-
-        <!-- Register Form -->
-        <form class="form" id="register-form">
-          <div class="form-group">
-            <label class="form-label">Full Name</label>
-            <input
-              type="text"
-              class="form-input"
-              id="register-name"
-              placeholder="Enter your full name"
-              required
-            />
-            <div class="error-message" id="register-name-error">
-              Name is required
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Email</label>
-            <input
-              type="email"
-              class="form-input"
-              id="register-email"
-              placeholder="Enter your email"
-              required
-            />
-            <div class="error-message" id="register-email-error">
-              Please enter a valid email
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Password</label>
-            <input
-              type="password"
-              class="form-input"
-              id="register-password"
-              placeholder="Create a password"
-              required
-            />
-            <div class="error-message" id="register-password-error">
-              Password must be at least 6 characters
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Confirm Password</label>
-            <input
-              type="password"
-              class="form-input"
-              id="register-confirm-password"
-              placeholder="Confirm your password"
-              required
-            />
-            <div class="error-message" id="register-confirm-error">
-              Passwords do not match
-            </div>
-          </div>
-          <div class="form-footer">
-            <button type="submit" class="btn">Create Account</button>
-          </div>
-        </form>
-      </div>
-
-      <!-- Additional Links -->
-      <div class="additional-links">
-        <a href="#" id="forgot-password">Forgot Password?</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Store Content -->
-  <div class="store-content" id="store-content">
+  <div class="container">
+    <!-- Navbar -->
     <nav class="navbar">
-      <a href="#" class="logo">Nebula</a>
-      <div class="welcome-msg" id="welcome-msg"></div>
+      <a href="#" class="logo">
+        <img src="images/your-logo.png" alt="Logo Nebula Store" />
+      </a>
       <ul class="nav-menu">
         <li><a href="#" class="nav-link">Beranda</a></li>
         <li><a href="#products" class="nav-link">Produk</a></li>
@@ -420,219 +340,221 @@
         <li><a href="#about" class="nav-link">Tentang</a></li>
         <li><a href="#contact" class="nav-link">Kontak</a></li>
         <li>
-          <a href="#" class="nav-link" id="logout-btn"
-            ><i class="fas fa-sign-out-alt"></i> Logout</a
-          >
+          <a href="#" class="nav-link cart-icon" id="cart-btn">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-count">0</span>
+          </a>
         </li>
       </ul>
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </nav>
 
-    <section>
-      <h2>Selamat datang di Nebula Store!</h2>
-      <p>
-        Ini adalah halaman utama toko aesthetic Anda. Silakan jelajahi produk
-        dan kategori kami.
-      </p>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Temukan Style Aesthetic-mu</h1>
+        <p>Koleksi terbaru untuk membuat hidupmu lebih colorful dan aesthetic</p>
+        <a href="#products" class="btn">Jelajahi Sekarang</a>
+      </div>
     </section>
+
+    <!-- Categories -->
+    <section class="categories" id="categories">
+      <h2 class="section-title">Kategori Populer</h2>
+      <div class="category-grid">
+        <!-- Ulangi div .category-card sesuai kebutuhan -->
+        <div class="category-card">
+          <div class="category-icon"><i class="fas fa-tshirt"></i></div>
+          <h3>Fashion</h3>
+          <p>Pakaian aesthetic terbaru</p>
+        </div>
+        <!-- ... lainnya -->
+      </div>
+    </section>
+
+    <!-- Products -->
+    <section class="products" id="products">
+      <h2 class="section-title">Produk Terbaru</h2>
+      <div class="product-grid">
+        <!-- Ulangi div .product-card sesuai kebutuhan -->
+        <div class="product-card">
+          <img src="https://placehold.co/400x300" alt="Produk" class="product-image" />
+          <div class="product-info">
+            <h3 class="product-title">Nama Produk</h3>
+            <p class="product-price">Rp 0</p>
+            <button class="add-to-cart">
+              <i class="fas fa-cart-plus"></i> Tambah ke Keranjang
+            </button>
+          </div>
+        </div>
+        <!-- ... lainnya -->
+      </div>
+    </section>
+
+    <!-- Featured -->
+    <section class="featured">
+      <h2 class="section-title">Why Choose Us?</h2>
+      <div class="category-grid">
+        <!-- Ulangi .category-card seperti di atas -->
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="about" id="about">
+      <h2 class="section-title">Tentang Nebula Store</h2>
+      <div class="about-content">
+        <p>
+          Nebula Store adalah destinasi utama untuk semua kebutuhan aesthetic
+          lifestyle. Kami menyediakan produk-produk berkualitas tinggi dengan
+          desain yang modern dan minimalis, perfect untuk mempercantik hidup
+          sehari-harimu.
+        </p>
+        <p>
+          Dengan fokus pada kualitas dan kepuasan pelanggan, kami berkomitmen
+          untuk memberikan pengalaman berbelanja yang menyenangkan dan
+          memuaskan.
+        </p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Nebula Store</h3>
+          <p>Toko aesthetic terpercaya dengan produk berkualitas dan pelayanan terbaik.</p>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="#">Beranda</a></li>
+            <li><a href="#products">Produk</a></li>
+            <li><a href="#categories">Kategori</a></li>
+            <li><a href="#about">Tentang Kami</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Contact Info</h3>
+          <p>Email: hello@nebulastore.com</p>
+          <p>Phone: +62 812-3456-7890</p>
+          <p>Address: Jl. Aesthetic No. 123, Jakarta</p>
+        </div>
+        <div class="footer-section">
+          <h3>Follow Us</h3>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-tiktok"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-facebook"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="copyright">
+        &copy; 2024 Nebula Store. All rights reserved.
+      </div>
+    </footer>
   </div>
 
+  <!-- JavaScript -->
   <script>
-    // DOM Elements
-    const loginContainer = document.getElementById("login-container");
-    const storeContent = document.getElementById("store-content");
-    const tabs = document.querySelectorAll(".tab");
-    const forms = document.querySelectorAll(".form");
-    const loginForm = document.getElementById("login-form");
-    const registerForm = document.getElementById("register-form");
-    const successMessage = document.getElementById("success-message");
-    const welcomeMsg = document.getElementById("welcome-msg");
-    const logoutBtn = document.getElementById("logout-btn");
+    const hamburger = document.getElementById("hamburger");
+    const navMenu = document.querySelector(".nav-menu");
+    const cartBtn = document.getElementById("cart-btn");
+    const closeCart = document.getElementById("close-cart");
+    const overlay = document.getElementById("overlay");
+    const cartModal = document.getElementById("cart-modal");
+    const cartItems = document.getElementById("cart-items");
+    const cartTotal = document.getElementById("cart-total");
+    const cartCount = document.querySelector(".cart-count");
+    const addToCartButtons = document.querySelectorAll(".add-to-cart");
+    const checkoutBtn = document.getElementById("checkout-btn");
+    let cart = [];
 
-    // Check if user is already logged in
-    function checkAuth() {
-      const currentUser  = localStorage.getItem("currentUser ");
-      if (currentUser ) {
-        showStore(JSON.parse(currentUser ));
-      }
-    }
+    hamburger.addEventListener("click", () => {
+      hamburger.classList.toggle("active");
+      navMenu.classList.toggle("active");
+    });
 
-    // Show store content
-    function showStore(user) {
-      loginContainer.style.display = "none";
-      storeContent.style.display = "block";
-      welcomeMsg.textContent = `Halo, ${user.name}!`;
-    }
+    cartBtn?.addEventListener("click", (e) => {
+      e.preventDefault();
+      cartModal?.classList.add("active");
+      overlay?.classList.add("active");
+    });
 
-    // Tab switching
-    tabs.forEach((tab) => {
-      tab.addEventListener("click", () => {
-        const tabName = tab.getAttribute("data-tab");
+    closeCart?.addEventListener("click", () => {
+      cartModal?.classList.remove("active");
+      overlay?.classList.remove("active");
+    });
 
-        // Update active tab
-        tabs.forEach((t) => t.classList.remove("active"));
-        tab.classList.add("active");
+    overlay?.addEventListener("click", () => {
+      cartModal?.classList.remove("active");
+      overlay?.classList.remove("active");
+    });
 
-        // Show corresponding form
-        forms.forEach((form) => {
-          form.classList.remove("active");
-          if (form.id === `${tabName}-form`) {
-            form.classList.add("active");
-          }
+    function updateCart() {
+      if (!cartItems || !cartTotal || !cartCount) return;
+      cartItems.innerHTML = "";
+      let total = 0;
+      cart.forEach((item) => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+        const div = document.createElement("div");
+        div.className = "cart-item";
+        div.innerHTML = `
+          <img src="${item.image}" alt="${item.name}">
+          <div class="cart-item-info">
+            <h4>${item.name}</h4>
+            <p>Rp ${item.price.toLocaleString()} x ${item.quantity}</p>
+            <p>Total: Rp ${itemTotal.toLocaleString()}</p>
+          </div>
+          <button class="remove-item" data-id="${item.id}">
+            <i class="fas fa-trash"></i>
+          </button>`;
+        cartItems.appendChild(div);
+      });
+      cartTotal.textContent = `Total: Rp ${total.toLocaleString()}`;
+      cartCount.textContent = cart.reduce((sum, i) => sum + i.quantity, 0);
+
+      document.querySelectorAll(".remove-item").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          cart = cart.filter((i) => i.id !== btn.dataset.id);
+          updateCart();
         });
+      });
+    }
+
+    addToCartButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const { id, name, price, image } = btn.dataset;
+        const existing = cart.find((i) => i.id === id);
+        if (existing) existing.quantity++;
+        else cart.push({ id, name, price: +price, image, quantity: 1 });
+        updateCart();
+        alert("Produk berhasil ditambahkan ke keranjang!");
       });
     });
 
-    // Form validation functions
-    function validateEmail(email) {
-      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return re.test(email);
-    }
-
-    function showError(inputId, errorId) {
-      document.getElementById(inputId).classList.add("error");
-      document.getElementById(errorId).style.display = "block";
-    }
-
-    function hideError(inputId, errorId) {
-      document.getElementById(inputId).classList.remove("error");
-      document.getElementById(errorId).style.display = "none";
-    }
-
-    // Login form submission
-    loginForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      const email = document.getElementById("login-email").value.trim();
-      const password = document.getElementById("login-password").value;
-      let isValid = true;
-
-      // Validate email
-      if (!validateEmail(email)) {
-        showError("login-email", "login-email-error");
-        isValid = false;
-      } else {
-        hideError("login-email", "login-email-error");
-      }
-
-      // Validate password
-      if (password.length < 1) {
-        showError("login-password", "login-password-error");
-        isValid = false;
-      } else {
-        hideError("login-password", "login-password-error");
-      }
-
-      if (isValid) {
-        const users = JSON.parse(localStorage.getItem("users") || "[]");
-        const user = users.find(
-          (u) => u.email.toLowerCase() === email.toLowerCase() && u.password === password
-        );
-
-        if (user) {
-          localStorage.setItem("currentUser ", JSON.stringify(user));
-          showStore(user);
-        } else {
-          alert("Email atau password salah!");
-        }
-      }
+    checkoutBtn?.addEventListener("click", () => {
+      if (!cart.length) return alert("Keranjang belanja kosong!");
+      alert("Terima kasih! Pesanan Anda sedang diproses.");
+      cart = [];
+      updateCart();
+      cartModal?.classList.remove("active");
+      overlay?.classList.remove("active");
     });
 
-    // Register form submission
-    registerForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      const name = document.getElementById("register-name").value.trim();
-      const email = document.getElementById("register-email").value.trim();
-      const password = document.getElementById("register-password").value;
-      const confirmPassword = document.getElementById("register-confirm-password").value;
-      let isValid = true;
-
-      // Validate name
-      if (name.length < 2) {
-        showError("register-name", "register-name-error");
-        isValid = false;
-      } else {
-        hideError("register-name", "register-name-error");
-      }
-
-      // Validate email
-      if (!validateEmail(email)) {
-        showError("register-email", "register-email-error");
-        isValid = false;
-      } else {
-        hideError("register-email", "register-email-error");
-      }
-
-      // Validate password
-      if (password.length < 6) {
-        showError("register-password", "register-password-error");
-        isValid = false;
-      } else {
-        hideError("register-password", "register-password-error");
-      }
-
-      // Validate confirm password
-      if (password !== confirmPassword) {
-        showError("register-confirm-password", "register-confirm-error");
-        isValid = false;
-      } else {
-        hideError("register-confirm-password", "register-confirm-error");
-      }
-
-      if (isValid) {
-        const users = JSON.parse(localStorage.getItem("users") || "[]");
-
-        // Check if email already exists
-        if (users.some((u) => u.email.toLowerCase() === email.toLowerCase())) {
-          alert("Email sudah terdaftar!");
-          return;
-        }
-
-        // Add new user
-        const newUser  = {
-          id: Date.now(),
-          name,
-          email,
-          password,
-          createdAt: new Date().toISOString(),
-        };
-
-        users.push(newUser );
-        localStorage.setItem("users", JSON.stringify(users));
-
-        // Show success message and switch to login tab
-        successMessage.style.display = "block";
-        setTimeout(() => {
-          successMessage.style.display = "none";
-        }, 3000);
-
-        // Switch to login tab
-        tabs[0].click();
-
-        // Clear form
-        registerForm.reset();
-      }
+    document.querySelectorAll(".nav-link").forEach((link) => {
+      link.addEventListener("click", () => {
+        hamburger.classList.remove("active");
+        navMenu.classList.remove("active");
+      });
     });
 
-    // Forgot password
-    document.getElementById("forgot-password").addEventListener("click", (e) => {
-      e.preventDefault();
-      alert("Fitur lupa password akan segera hadir!");
-    });
-
-    // Logout button
-    logoutBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      localStorage.removeItem("currentUser ");
-      storeContent.style.display = "none";
-      loginContainer.style.display = "block";
-      loginForm.reset();
-      registerForm.reset();
-      tabs[0].click();
-    });
-
-    // Initialize
-    checkAuth();
+    updateCart();
   </script>
 </body>
 </html>
